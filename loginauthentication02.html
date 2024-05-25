@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Authentication System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Login Authentication System</h2>
+        <div id="registerForm">
+            <h3>Register</h3>
+            <input type="text" id="registerUsername" placeholder="Username" required>
+            <input type="password" id="registerPassword" placeholder="Password" required>
+            <button onclick="register()">Register</button>
+        </div>
+        <div id="loginForm">
+            <h3>Login</h3>
+            <input type="text" id="loginUsername" placeholder="Username" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <button onclick="login()">Login</button>
+        </div>
+        <div id="securedPage" style="display: none;">
+            <h3>Secured Page</h3>
+            <p>Welcome to the secured page! Only authenticated users can see this.</p>
+            <button onclick="logout()">Logout</button>
+        </div>
+    </div>
+    <script>
+        function hashPassword(password) {
+            // Simple hash function for demonstration purposes (not secure)
+            return btoa(password);
+        }
+
+        function register() {
+            const username = document.getElementById('registerUsername').value;
+            const password = document.getElementById('registerPassword').value;
+            const hashedPassword = hashPassword(password);
+
+            if (username && password) {
+                localStorage.setItem(username, hashedPassword);
+                alert('Registration successful!');
+            } else {
+                alert('Please enter a username and password.');
+            }
+        }
+
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const hashedPassword = hashPassword(password);
+
+            const storedPassword = localStorage.getItem(username);
+            
+            if (storedPassword === hashedPassword) {
+                alert('Login successful!');
+                showSecuredPage();
+            } else {
+                alert('Invalid username or password.');
+            }
+        }
+
+        function showSecuredPage() {
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('securedPage').style.display = 'block';
+        }
+
+        function logout() {
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('securedPage').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
